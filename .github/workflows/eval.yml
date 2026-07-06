@@ -1,0 +1,75 @@
+﻿name: RAG Eval Regression Gate
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        pip install sentence-transformers chromadb rank-bm25 groq numpy pyyaml pymupdf tiktoken
+
+    - name: Rebuild corpus from verified paper list
+      env:
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      run: |
+        python src/download_pdfs.py
+        python src/extract_text.py
+        python src/clean_texts.py
+        python src/chunk_texts.py
+        python src/embed_chunks.py
+        python src/bm25_retriever.py
+
+    - name: Run eval pipeline
+      env:
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      run: |
+        python src/evaluate.py
+
+    - name: Check regression against baseline
+      run: |
+        python - <<'EOF'
+        import json, sys
+
+        with open("eval/eval_results.json") as f:
+            results = json.load(f)
+
+        scores = results["summary"]
+
+        # Baseline scores from initial eval run
+        # CI fails if any metric drops more than 5% below baseline
+        BASELINES = {
+            "faithfulness": 0.91,
+            "context_precision": 0.76,
+        }
+        TOLERANCE = 0.05  # allow 5% drop before failing
+
+        failed = []
+        for metric, baseline in BASELINES.items():
+            actual = scores.get(metric, 0)
+            threshold = baseline - TOLERANCE
+            status = "PASS" if actual >= threshold else "FAIL"
+            print(f"{metric}: baseline={baseline} actual={actual} threshold={threshold} -> {status}")
+            if actual < threshold:
+                failed.append(metric)
+
+        if failed:
+            print(f"\nCI FAILED: {failed} dropped below threshold")
+            sys.exit(1)
+        else:
+            print("\nAll metrics within acceptable range. CI PASSED.")
+        EOF
