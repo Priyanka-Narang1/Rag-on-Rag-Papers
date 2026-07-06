@@ -1,0 +1,422 @@
+﻿[
+  {
+    "id": "q001",
+    "question": "What is the core idea behind Retrieval-Augmented Generation (RAG)?",
+    "ground_truth": "RAG combines a parametric memory (pre-trained language model) with a non-parametric memory (retrieved documents) to generate knowledge-intensive answers, allowing the model to access information not stored in its parameters.",
+    "source_paper": "2005.11401",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q002",
+    "question": "What retriever does the original RAG paper use?",
+    "ground_truth": "The original RAG paper uses a Dense Passage Retriever (DPR) to retrieve relevant documents.",
+    "source_paper": "2005.11401",
+    "question_type": "factual"
+  },
+  {
+    "id": "q003",
+    "question": "What are the two RAG formulations proposed in the original RAG paper?",
+    "ground_truth": "RAG-Sequence, which uses the same retrieved document to generate the entire sequence, and RAG-Token, which can use different documents for each generated token.",
+    "source_paper": "2005.11401",
+    "question_type": "factual"
+  },
+  {
+    "id": "q004",
+    "question": "How does DPR represent queries and passages for retrieval?",
+    "ground_truth": "DPR uses two independent BERT encoders, one for queries and one for passages, to produce dense vector representations, and retrieves passages using maximum inner product search (MIPS).",
+    "source_paper": "2004.04906",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q005",
+    "question": "What datasets does DPR evaluate on?",
+    "ground_truth": "DPR evaluates on Natural Questions, TriviaQA, WebQuestions, CuratedTREC, and SQuAD open-domain QA benchmarks.",
+    "source_paper": "2004.04906",
+    "question_type": "factual"
+  },
+  {
+    "id": "q006",
+    "question": "Why does DPR outperform BM25 for open-domain QA?",
+    "ground_truth": "DPR learns dense representations that capture semantic similarity beyond keyword matching, allowing it to retrieve passages that are semantically relevant even when they do not share exact terms with the query.",
+    "source_paper": "2004.04906",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q007",
+    "question": "How does REALM differ from standard language model pre-training?",
+    "ground_truth": "REALM augments language model pre-training with a learned knowledge retriever that retrieves documents from a large corpus during pre-training, fine-tuning, and inference, making knowledge retrieval explicit and interpretable.",
+    "source_paper": "2002.08909",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q008",
+    "question": "What corpus does REALM retrieve from during pre-training?",
+    "ground_truth": "REALM retrieves from a corpus of Wikipedia documents during pre-training.",
+    "source_paper": "2002.08909",
+    "question_type": "factual"
+  },
+  {
+    "id": "q009",
+    "question": "What is the masked language modeling objective used in REALM?",
+    "ground_truth": "REALM uses a masked language model objective where the model must predict masked tokens using both its parametric knowledge and documents retrieved from the knowledge corpus.",
+    "source_paper": "2002.08909",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q010",
+    "question": "What is the key innovation of ColBERT over standard bi-encoder models?",
+    "ground_truth": "ColBERT introduces late interaction, where query and document representations are computed independently but relevance is scored using fine-grained interaction between all query and document token embeddings via a MaxSim operator.",
+    "source_paper": "2004.12832",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q011",
+    "question": "What is the MaxSim operator in ColBERT?",
+    "ground_truth": "The MaxSim operator computes the maximum cosine similarity between each query token embedding and all document token embeddings, then sums these maximum similarities to produce the final relevance score.",
+    "source_paper": "2004.12832",
+    "question_type": "factual"
+  },
+  {
+    "id": "q012",
+    "question": "How does ColBERT achieve efficient retrieval despite late interaction?",
+    "ground_truth": "ColBERT pre-computes and indexes document token embeddings offline, so at query time only the query embeddings need to be computed, enabling efficient retrieval via approximate nearest neighbor search.",
+    "source_paper": "2004.12832",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q013",
+    "question": "What problem does ColBERTv2 address compared to the original ColBERT?",
+    "ground_truth": "ColBERTv2 addresses the large storage footprint of ColBERT by introducing residual compression, which reduces the space required for document embeddings while maintaining retrieval quality.",
+    "source_paper": "2112.01488",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q014",
+    "question": "What training strategy does ColBERTv2 use to improve retrieval quality?",
+    "ground_truth": "ColBERTv2 uses distillation from a cross-encoder teacher model combined with hard negative mining to improve the quality of its learned representations.",
+    "source_paper": "2112.01488",
+    "question_type": "factual"
+  },
+  {
+    "id": "q015",
+    "question": "What is HyDE and how does it improve dense retrieval?",
+    "ground_truth": "HyDE (Hypothetical Document Embeddings) generates a hypothetical document using an LLM that answers the query, then encodes this hypothetical document to retrieve real documents. This improves zero-shot retrieval by bridging the gap between query and document embedding spaces.",
+    "source_paper": "2212.10496",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q016",
+    "question": "Why does HyDE work without any relevance supervision?",
+    "ground_truth": "HyDE works without relevance supervision because it uses an instruction-following LLM to generate hypothetical documents that capture the semantic content of relevant documents, allowing the encoder to find real documents similar to the hypothetical one.",
+    "source_paper": "2212.10496",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q017",
+    "question": "What is the Lost in the Middle phenomenon?",
+    "ground_truth": "Lost in the Middle refers to the finding that language models perform best when relevant information is at the beginning or end of the input context, and struggle to use information placed in the middle of long contexts.",
+    "source_paper": "2307.03172",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q018",
+    "question": "What tasks does the Lost in the Middle paper evaluate?",
+    "ground_truth": "The paper evaluates multi-document question answering and key-value retrieval tasks to study how language models use information at different positions in long contexts.",
+    "source_paper": "2307.03172",
+    "question_type": "factual"
+  },
+  {
+    "id": "q019",
+    "question": "What implication does Lost in the Middle have for RAG system design?",
+    "ground_truth": "RAG systems should place the most relevant retrieved chunks at the beginning or end of the context rather than in the middle, since language models are less likely to use information placed in the middle of long inputs.",
+    "source_paper": "2307.03172",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q020",
+    "question": "How does Sentence-BERT differ from standard BERT for sentence similarity?",
+    "ground_truth": "Sentence-BERT uses siamese and triplet network structures to fine-tune BERT, producing fixed-size sentence embeddings that can be compared using cosine similarity, making it orders of magnitude faster than standard BERT which requires cross-encoding every pair.",
+    "source_paper": "1908.10084",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q021",
+    "question": "What training objective does Sentence-BERT use for semantic similarity?",
+    "ground_truth": "Sentence-BERT uses a siamese network with a regression or classification objective on sentence pairs, trained on NLI datasets using softmax loss or cosine similarity loss.",
+    "source_paper": "1908.10084",
+    "question_type": "factual"
+  },
+  {
+    "id": "q022",
+    "question": "What are the four types of reflection tokens used in Self-RAG?",
+    "ground_truth": "Self-RAG uses four special tokens: Retrieve (whether to retrieve), ISREL (whether retrieved passages are relevant), ISSUP (whether the generation is supported by the passage), and ISUSE (whether the response is useful).",
+    "source_paper": "2310.11511",
+    "question_type": "factual"
+  },
+  {
+    "id": "q023",
+    "question": "How does Self-RAG decide when to retrieve during generation?",
+    "ground_truth": "Self-RAG predicts a special Retrieve token during generation. If the model predicts Retrieve=Yes (based on the probability surpassing a threshold), it retrieves relevant passages before continuing generation.",
+    "source_paper": "2310.11511",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q024",
+    "question": "How is Self-RAG trained to generate reflection tokens?",
+    "ground_truth": "Self-RAG is trained on data augmented with reflection tokens generated by a critic model, which inserts appropriate special tokens into training sequences to teach the generator when to retrieve and how to evaluate its own outputs.",
+    "source_paper": "2310.11511",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q025",
+    "question": "What is the main problem that Corrective RAG (CRAG) addresses?",
+    "ground_truth": "CRAG addresses the problem that retrieved documents may be irrelevant or incorrect, which causes standard RAG systems to generate inaccurate answers. CRAG adds a corrective mechanism to evaluate and refine retrieved documents.",
+    "source_paper": "2401.15884",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q026",
+    "question": "What are the three actions CRAG takes based on retrieval quality?",
+    "ground_truth": "CRAG takes one of three actions based on a retrieval evaluator score: Correct (retrieved documents are relevant, use them directly), Incorrect (documents are irrelevant, trigger web search), or Ambiguous (confidence is low, combine both retrieved documents and web search results).",
+    "source_paper": "2401.15884",
+    "question_type": "factual"
+  },
+  {
+    "id": "q027",
+    "question": "What does CRAG use to evaluate retrieval quality?",
+    "ground_truth": "CRAG uses a lightweight retrieval evaluator model trained to score the relevance of retrieved documents to the input query, producing a confidence score that determines which corrective action to take.",
+    "source_paper": "2401.15884",
+    "question_type": "factual"
+  },
+  {
+    "id": "q028",
+    "question": "What is the key idea behind RAFT for domain-specific RAG?",
+    "ground_truth": "RAFT fine-tunes language models to answer questions using relevant documents while ignoring distractor documents, training the model to identify and cite the oracle document that contains the answer rather than relying on parametric knowledge.",
+    "source_paper": "2403.10131",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q029",
+    "question": "How does RAFT handle distractor documents during training?",
+    "ground_truth": "RAFT includes distractor documents (irrelevant documents) in the training context alongside the oracle document, training the model to identify and use only the relevant document while ignoring the distractors.",
+    "source_paper": "2403.10131",
+    "question_type": "factual"
+  },
+  {
+    "id": "q030",
+    "question": "How does RAPTOR differ from standard flat chunking approaches?",
+    "ground_truth": "RAPTOR recursively embeds, clusters, and summarizes text chunks to construct a hierarchical tree structure with multiple levels of summarization, allowing retrieval at different levels of abstraction rather than only at the chunk level.",
+    "source_paper": "2401.18059",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q031",
+    "question": "What clustering algorithm does RAPTOR use?",
+    "ground_truth": "RAPTOR uses Gaussian Mixture Models (GMM) with soft cluster assignments for clustering text chunks, allowing chunks to belong to multiple clusters simultaneously.",
+    "source_paper": "2401.18059",
+    "question_type": "factual"
+  },
+  {
+    "id": "q032",
+    "question": "What are the two retrieval strategies RAPTOR supports?",
+    "ground_truth": "RAPTOR supports tree traversal retrieval, which searches layer by layer from the root, and collapsed tree retrieval, which searches all nodes across all layers simultaneously treating the tree as a single flat index.",
+    "source_paper": "2401.18059",
+    "question_type": "factual"
+  },
+  {
+    "id": "q033",
+    "question": "What is GraphRAG and how does it differ from standard RAG?",
+    "ground_truth": "GraphRAG builds a knowledge graph from the document corpus and uses community detection to identify clusters of related entities, then generates summaries for each community. Unlike standard RAG which retrieves text chunks, GraphRAG retrieves structured graph-based summaries for query-focused summarization.",
+    "source_paper": "2404.16130",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q034",
+    "question": "What type of queries does GraphRAG handle better than standard RAG?",
+    "ground_truth": "GraphRAG handles global queries that require synthesizing information across an entire document corpus better than standard RAG, which is designed for local queries that can be answered from specific retrieved chunks.",
+    "source_paper": "2404.16130",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q035",
+    "question": "What are the core metrics that RAGAS uses to evaluate RAG pipelines?",
+    "ground_truth": "RAGAS evaluates RAG pipelines using faithfulness (whether the answer is supported by the retrieved context), answer relevance (whether the answer addresses the question), and context relevance (whether the retrieved context is relevant to the question).",
+    "source_paper": "2309.15217",
+    "question_type": "factual"
+  },
+  {
+    "id": "q036",
+    "question": "What makes RAGAS reference-free?",
+    "ground_truth": "RAGAS is reference-free because it evaluates RAG pipelines without requiring ground truth human annotations, instead using LLM-based metrics that assess faithfulness and relevance directly from the question, retrieved context, and generated answer.",
+    "source_paper": "2309.15217",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q037",
+    "question": "How does RAGAS measure faithfulness?",
+    "ground_truth": "RAGAS measures faithfulness by decomposing the answer into individual claims and verifying each claim against the retrieved context using an LLM, computing the ratio of supported claims to total claims.",
+    "source_paper": "2309.15217",
+    "question_type": "factual"
+  },
+  {
+    "id": "q038",
+    "question": "How does ARES differ from RAGAS in evaluating RAG systems?",
+    "ground_truth": "ARES trains lightweight classifier judges using synthetic data and human preference annotations with a prediction-powered inference framework, whereas RAGAS uses zero-shot LLM prompting. ARES claims higher correlation with human judgments using fewer annotations.",
+    "source_paper": "2311.09476",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q039",
+    "question": "What three qualities does ARES evaluate in RAG systems?",
+    "ground_truth": "ARES evaluates context relevance (whether retrieved passages are relevant to the query), answer faithfulness (whether the answer is supported by the context), and answer relevance (whether the answer addresses the query).",
+    "source_paper": "2311.09476",
+    "question_type": "factual"
+  },
+  {
+    "id": "q040",
+    "question": "What is prediction-powered inference in ARES?",
+    "ground_truth": "Prediction-powered inference is a statistical framework used by ARES to combine a small number of human annotations with LLM predictions to produce accurate evaluation estimates with confidence intervals, reducing the annotation burden.",
+    "source_paper": "2311.09476",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q041",
+    "question": "What is the purpose of query rewriting in RAG systems?",
+    "ground_truth": "Query rewriting transforms the original user query into a form better suited for retrieval, bridging the lexical and semantic gap between how users phrase questions and how relevant information is expressed in documents.",
+    "source_paper": "2305.14283",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q042",
+    "question": "What rewriting method does the query rewriting paper propose?",
+    "ground_truth": "The paper proposes Rewrite-Retrieve-Read, a pipeline that uses a trainable rewriter module to rewrite queries before retrieval, with the rewriter trained using reinforcement learning feedback from the downstream reader performance.",
+    "source_paper": "2305.14283",
+    "question_type": "factual"
+  },
+  {
+    "id": "q043",
+    "question": "What are the main components of a RAG system according to the RAG survey?",
+    "ground_truth": "According to the RAG survey, the main components are the retriever (which indexes and retrieves relevant documents), the generator (which produces answers conditioned on retrieved documents), and the augmentation mechanism (which combines retrieved information with the query).",
+    "source_paper": "2312.10997",
+    "question_type": "factual"
+  },
+  {
+    "id": "q044",
+    "question": "What are the three paradigms of RAG identified in the survey?",
+    "ground_truth": "The RAG survey identifies three paradigms: Naive RAG (basic retrieve-then-generate), Advanced RAG (with pre-retrieval and post-retrieval enhancements), and Modular RAG (flexible pipeline with interchangeable components).",
+    "source_paper": "2312.10997",
+    "question_type": "factual"
+  },
+  {
+    "id": "q045",
+    "question": "What retrieval granularities does the RAG survey identify?",
+    "ground_truth": "The RAG survey identifies multiple retrieval granularities including tokens, phrases, sentences, passages, chunks, documents, and knowledge graph entities.",
+    "source_paper": "2312.10997",
+    "question_type": "factual"
+  },
+  {
+    "id": "q046",
+    "question": "What is reciprocal rank fusion and why is it used for hybrid retrieval?",
+    "ground_truth": "Reciprocal rank fusion (RRF) combines ranked lists from multiple retrievers by scoring each document as the sum of 1/(k+rank) across all lists, where k is a smoothing constant. It is used because it only requires rank positions and avoids the difficulty of normalizing scores from different retrievers onto a common scale.",
+    "source_paper": "2604.01733",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q047",
+    "question": "What retrieval strategies does the BM25-to-CRAG benchmark paper evaluate?",
+    "ground_truth": "The paper benchmarks sparse retrieval (BM25), dense retrieval, hybrid fusion (BM25 + dense with RRF), contextual retrieval, cross-encoder reranking, query expansion (HyDE, multi-query), and adaptive retrieval (CRAG).",
+    "source_paper": "2604.01733",
+    "question_type": "factual"
+  },
+  {
+    "id": "q048",
+    "question": "What finding does the BM25-to-CRAG paper report about hybrid retrieval vs dense retrieval alone?",
+    "ground_truth": "The paper finds that hybrid fusion combining BM25 and dense retrieval with RRF consistently outperforms dense retrieval alone, demonstrating that sparse and dense retrievers are complementary.",
+    "source_paper": "2604.01733",
+    "question_type": "factual"
+  },
+  {
+    "id": "q049",
+    "question": "What is the difference between RAG-Sequence and RAG-Token generation?",
+    "ground_truth": "In RAG-Sequence, the same retrieved document is used to generate the entire output sequence, marginalizing over documents at the sequence level. In RAG-Token, a different document can be retrieved and used for each generated token, allowing more dynamic use of multiple documents.",
+    "source_paper": "2005.11401",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q050",
+    "question": "What is the role of the knowledge retriever in REALM during inference?",
+    "ground_truth": "During inference, the REALM knowledge retriever encodes the input query and retrieves the top-k most relevant documents from the Wikipedia corpus using maximum inner product search, which are then used by the knowledge-augmented encoder to produce the final prediction.",
+    "source_paper": "2002.08909",
+    "question_type": "factual"
+  },
+  {
+    "id": "q051",
+    "question": "How does ColBERT handle variable-length queries and documents?",
+    "ground_truth": "ColBERT encodes each token in a query or document independently using BERT, producing a matrix of embeddings rather than a single vector, and uses the MaxSim operator to compute relevance scores that naturally handle variable-length inputs.",
+    "source_paper": "2004.12832",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q052",
+    "question": "What compression technique does ColBERTv2 use to reduce index size?",
+    "ground_truth": "ColBERTv2 uses residual compression, where each embedding is represented as a centroid ID from a quantized codebook plus a residual vector, significantly reducing storage requirements compared to storing full-precision embeddings.",
+    "source_paper": "2112.01488",
+    "question_type": "factual"
+  },
+  {
+    "id": "q053",
+    "question": "What performance degradation do language models show for information in the middle of context?",
+    "ground_truth": "Language models show significantly degraded performance when relevant information is placed in the middle of the context compared to when it appears at the beginning or end, a U-shaped performance curve with respect to position.",
+    "source_paper": "2307.03172",
+    "question_type": "factual"
+  },
+  {
+    "id": "q054",
+    "question": "How does RAFT generate training data?",
+    "ground_truth": "RAFT generates training data by creating question-answer pairs from domain documents and constructing training examples that include both oracle (relevant) documents and distractor documents, with answers that contain chain-of-thought reasoning and explicit citations to the oracle document.",
+    "source_paper": "2403.10131",
+    "question_type": "factual"
+  },
+  {
+    "id": "q055",
+    "question": "What dimensionality reduction technique does RAPTOR use before clustering?",
+    "ground_truth": "RAPTOR uses UMAP for dimensionality reduction before applying Gaussian Mixture Model clustering, reducing the high-dimensional embedding space to make clustering more effective.",
+    "source_paper": "2401.18059",
+    "question_type": "factual"
+  },
+  {
+    "id": "q056",
+    "question": "How does GraphRAG build its knowledge graph?",
+    "ground_truth": "GraphRAG uses an LLM to extract entities and relationships from text chunks, constructing a graph where nodes represent entities and edges represent relationships, then applies community detection algorithms to identify clusters of related entities.",
+    "source_paper": "2404.16130",
+    "question_type": "factual"
+  },
+  {
+    "id": "q057",
+    "question": "What is context relevance in RAGAS and how is it measured?",
+    "ground_truth": "Context relevance measures whether the retrieved context contains information necessary to answer the question. RAGAS measures it by using an LLM to extract sentences from the context that are relevant to the question and computing the ratio of relevant sentences to total sentences.",
+    "source_paper": "2309.15217",
+    "question_type": "factual"
+  },
+  {
+    "id": "q058",
+    "question": "What is the WikiEval dataset introduced in the RAGAS paper?",
+    "ground_truth": "WikiEval is a human-annotated evaluation dataset introduced in the RAGAS paper, consisting of questions from Wikipedia pages about recent events, with human annotations for faithfulness and answer relevance used to validate the RAGAS metrics.",
+    "source_paper": "2309.15217",
+    "question_type": "factual"
+  },
+  {
+    "id": "q059",
+    "question": "What is the Rewrite-Retrieve-Read pipeline?",
+    "ground_truth": "Rewrite-Retrieve-Read is a pipeline where a query rewriter transforms the original query before retrieval, the rewritten query is used to retrieve documents, and a reader generates the final answer from the retrieved documents. The rewriter is trained with reinforcement learning using downstream reader performance as reward.",
+    "source_paper": "2305.14283",
+    "question_type": "conceptual"
+  },
+  {
+    "id": "q060",
+    "question": "How does contextual retrieval improve over standard chunking according to the BM25-to-CRAG paper?",
+    "ground_truth": "Contextual retrieval improves over standard chunking by enriching each chunk with document-level context before indexing, providing consistent gains in retrieval quality by giving chunks more informative representations.",
+    "source_paper": "2604.01733",
+    "question_type": "conceptual"
+  }
+]

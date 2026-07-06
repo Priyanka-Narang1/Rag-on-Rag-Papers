@@ -1,0 +1,90 @@
+{
+  "summary": {
+    "faithfulness": 0.91,
+    "answer_relevancy": 0.4938,
+    "context_precision": 0.76,
+    "num_questions": 10
+  },
+  "per_question": [
+    {
+      "id": "q001",
+      "question": "What is the core idea behind Retrieval-Augmented Generation (RAG)?",
+      "answer": "RAG augments the input of LLMs with relevant retrieved passages, reducing factual errors in knowledge-intensive tasks.",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.4958,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q002",
+      "question": "What retriever does the original RAG paper use?",
+      "answer": "Dense retriever based on BERT architecture",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.1998,
+      "context_precision": 0.4
+    },
+    {
+      "id": "q003",
+      "question": "What are the two RAG formulations proposed in the original RAG paper?",
+      "answer": "Standard RAG and Advanced RAG",
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.7238,
+      "context_precision": 0.2
+    },
+    {
+      "id": "q004",
+      "question": "How does DPR represent queries and passages for retrieval?",
+      "answer": "DPR represents queries and passages using a dual-encoder model, where the query encoder and passage encoder are trained separately to learn dense vector representations of the input text. The query encoder takes the question as input and outputs a dense vector representation, while the passage encoder takes the passage as input and outputs a dense vector representation. The similarity between the query and passage is then computed using the dot product of their vector representations.",
+      "faithfulness": 0.6,
+      "answer_relevancy": 0.7568,
+      "context_precision": 0.8
+    },
+    {
+      "id": "q005",
+      "question": "What datasets does DPR evaluate on?",
+      "answer": "NQ, TriviaQA, WQ, TREC, QuALITY, QASPER, NarrativeQA, WebQuestions, CuratedTREC",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.1433,
+      "context_precision": 0.6
+    },
+    {
+      "id": "q006",
+      "question": "Why does DPR outperform BM25 for open-domain QA?",
+      "answer": "DPR outperforms BM25 for open-domain QA because it uses a dense encoder that maps text passages to a low-dimensional real-valued vector space, allowing for efficient retrieval and potentially giving high similarity scores to semantically relevant text pairs, even without exact token matching.",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.7478,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q007",
+      "question": "How does REALM differ from standard language model pre-training?",
+      "answer": "REALM differs from standard language model pre-training by incorporating a neural knowledge retriever that retrieves knowledge from a textual knowledge corpus, Z (e.g., all of Wikipedia), and uses this knowledge to improve the language model's performance.",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8423,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q008",
+      "question": "What corpus does REALM retrieve from during pre-training?",
+      "answer": "Wikipedia, or CC-News",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.1088,
+      "context_precision": 1.0
+    },
+    {
+      "id": "q009",
+      "question": "What is the masked language modeling objective used in REALM?",
+      "answer": "masked language modeling as the learning signal and backpropagating through a retrieval step that considers millions of documents",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.5236,
+      "context_precision": 0.8
+    },
+    {
+      "id": "q010",
+      "question": "What is the key innovation of ColBERT over standard bi-encoder models?",
+      "answer": "ColBERT's late interaction architecture, which independently encodes the query and the document using BERT and then employs a cheap yet powerful interaction step that models their fine-grained similarity.",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.3955,
+      "context_precision": 0.8
+    }
+  ]
+}

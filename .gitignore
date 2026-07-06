@@ -1,0 +1,25 @@
+﻿# API keys - never commit these
+.env
+
+# Large data files - rebuilt via setup scripts
+data/raw_pdfs/
+data/processed/
+data/chroma_db/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
