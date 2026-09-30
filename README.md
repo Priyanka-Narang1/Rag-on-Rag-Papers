@@ -23,7 +23,7 @@ The pipeline funnels every query through 7 stages:
 3. **Reciprocal Rank Fusion** — merges both ranked lists (k=60, from Cormack et al. 2009)
 4. **Cross-Encoder Reranking** — `ms-marco-MiniLM-L-6-v2` scores true relevance on top-30 candidates
 5. **Score Gate** — abstains if best score < -2.5 (out-of-domain detection, no LLM call)
-6. **LLM Generation** — Groq `llama-3.1-8b-instant` with strict grounding prompt (v2.2)
+6. **LLM Generation** — Groq `llama3-8b-8192` with strict grounding prompt (v2.2)
 7. **Citation Gate** — abstains if answer has zero valid citations (parametric knowledge detection)
 
 ---
@@ -154,7 +154,7 @@ GitHub Actions runs the full eval pipeline on every push. Build fails if:
 
 1. **RAGAS metrics question** — RAG survey's citation-dense comparison table ranks higher than the RAGAS paper's core content chunk. Fixable with metadata-aware retrieval or paper-level boosting.
 2. **CPU latency** — reranker 2.8s p50 and LLM 23s p50 improve dramatically with GPU and paid API.
-3. **8B model reasoning** — llama-3.1-8b-instant occasionally produces generic answers even when context is specific. A 70B model would improve synthesis quality.
+3. **8B model reasoning** — llama3-8b-8192 occasionally produces generic answers even when context is specific. A 70B model would improve synthesis quality.
 
 ---
 

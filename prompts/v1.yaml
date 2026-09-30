@@ -9,7 +9,7 @@
   4. Output ONLY valid JSON: {"answer": "your answer", "citations": ["chunk_id_1", "chunk_id_2"]}
 
 version: "1.0"
-model: "llama-3.1-8b-instant"
+model: "llama3-8b-8192"
 temperature: 0.1
 max_tokens: 1024
 description: "Initial production prompt with citation enforcement"
