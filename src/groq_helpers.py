@@ -1,69 +1,53 @@
 ﻿import json
 import logging
-import re
+import time
+from types import SimpleNamespace
 
 from groq import APIConnectionError, APIStatusError, BadRequestError, RateLimitError
 
 logger = logging.getLogger(__name__)
 
-MODEL = "llama-3.1-8b-instant"
 MAX_ATTEMPTS = 3
 
-# Returned instead of a 500 so the frontend always gets a valid payload.
-FALLBACK_RESPONSE = {
+# Served instead of a 500 so the frontend always receives a valid answer payload.
+FALLBACK_ANSWER = {
     "answer": "I couldn't generate a grounded answer for this question. Please try rephrasing it.",
     "citations": [],
-    "key_takeaways": [],
-    "abstain": True,
 }
 
 
-def _extract_json(text):
-    """Parse JSON even when the model wraps it in prose or code fences."""
-    if not text or not text.strip():
-        return None
-    candidate = re.sub(r"^```(?:json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
-    try:
-        parsed = json.loads(candidate)
-    except json.JSONDecodeError:
-        match = re.search(r"\{.*\}", candidate, flags=re.DOTALL)
-        if not match:
-            return None
-        try:
-            parsed = json.loads(match.group(0))
-        except json.JSONDecodeError:
-            return None
-    return parsed if isinstance(parsed, dict) else None
+def call_groq_with_fallback(client, *, model, messages, temperature, max_tokens):
+    """Return (raw_text, usage) and never raise on model-side failures.
 
-
-def _call_groq(client, messages, json_mode):
-    kwargs = {"model": MODEL, "messages": messages, "temperature": 0.1, "max_tokens": 1024}
-    if json_mode:
-        kwargs["response_format"] = {"type": "json_object"}
-    response = client.chat.completions.create(**kwargs)
-    if not response.choices:
-        return None
-    return response.choices[0].message.content
-
-
-def generate_structured_answer(client, messages):
-    """Strict JSON mode first, then free-text parsing.
-
-    Strict mode hard-fails (400) on empty output, which happens when the
-    model abstains in plain text.
+    Strict JSON mode hard-fails with a 400 when the model emits nothing
+    (e.g. when it abstains), so retries drop JSON mode and raise the
+    temperature slightly to avoid the same empty generation.
     """
     for attempt in range(1, MAX_ATTEMPTS + 1):
-        json_mode = attempt == 1
+        kwargs = {
+            "model": model,
+            "messages": messages,
+            "temperature": min(1.0, temperature + 0.2 * (attempt - 1)),
+            "max_tokens": max_tokens,
+        }
+        if attempt == 1:
+            kwargs["response_format"] = {"type": "json_object"}
         try:
-            parsed = _extract_json(_call_groq(client, messages, json_mode))
-            if parsed is not None:
-                return parsed
-            logger.warning("Attempt %d: model output was not parseable JSON", attempt)
+            response = client.chat.completions.create(**kwargs)
         except BadRequestError as exc:
             logger.warning("Attempt %d: Groq rejected generation: %s", attempt, exc)
+            continue
         except (RateLimitError, APIConnectionError) as exc:
             logger.warning("Attempt %d: transient Groq error: %s", attempt, exc)
+            time.sleep(attempt)
+            continue
         except APIStatusError:
             logger.exception("Attempt %d: non-retryable Groq status", attempt)
             break
-    return dict(FALLBACK_RESPONSE)
+
+        content = response.choices[0].message.content if response.choices else None
+        if content and content.strip():
+            return content, response.usage
+        logger.warning("Attempt %d: empty model output", attempt)
+
+    return json.dumps(FALLBACK_ANSWER), SimpleNamespace(prompt_tokens=0, completion_tokens=0)

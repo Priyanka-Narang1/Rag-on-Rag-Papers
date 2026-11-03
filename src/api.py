@@ -12,6 +12,10 @@ from sentence_transformers import SentenceTransformer, CrossEncoder
 import chromadb
 from groq import Groq
 import yaml
+try:
+    from src.groq_helpers import call_groq_with_fallback
+except ImportError:
+    from groq_helpers import call_groq_with_fallback
 
 BASE_DIR = Path(__file__).parent.parent
 DATA_DIR = BASE_DIR / "data"
@@ -228,21 +232,19 @@ def query_rag(req: QueryRequest):
     user = f"Context:\n{context}\n\nQuestion: {req.question}"
 
     t0 = time.perf_counter()
-    response = groq_client.chat.completions.create(
+    raw, usage = call_groq_with_fallback(
+        groq_client,
         model=GROQ_MODEL,
         messages=[
             {"role": "system", "content": system},
-            {"role": "user", "content": user}
+            {"role": "user", "content": user},
         ],
-        response_format={"type": "json_object"},
         temperature=prompt_config.get("temperature", 0.1),
         max_tokens=prompt_config.get("max_tokens", 1024),
     )
     latencies["llm_ms"] = round((time.perf_counter() - t0) * 1000, 2)
     latencies["total_ms"] = round((time.perf_counter() - total_start) * 1000, 2)
 
-    raw = response.choices[0].message.content
-    usage = response.usage
     cost_usd = round(
         (usage.prompt_tokens / 1000 * COST_PER_1K_INPUT) +
         (usage.completion_tokens / 1000 * COST_PER_1K_OUTPUT), 6
